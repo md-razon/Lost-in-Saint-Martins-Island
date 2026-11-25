@@ -383,9 +383,13 @@ export const LEVELS: LevelConfig[] = [
     biome: 'beach',
     worldWidth: 2500,
     startX: 125,
-    checkpointX: 1200,
+    checkpointX: 1150,
+    storyIntroBn: 'অজানা নির্জন দ্বীপের সৈকতে ভেসে উঠেছে রাজন। চারপাশে উত্তাল ঢেউ, দূরে উঁচু বালুকাবেলা হাতছানি দিচ্ছে।',
+    storyIntroEmotion: 'suspense',
     introLineBn: 'সাগরের ঢেউ এখনো উত্তাল! আগে উঁচু নিরাপদ জায়গায় পৌঁছাতে হবে।',
     introEmotion: 'fear',
+    storyBeatBn: 'বেলা গড়িয়ে রোদ চড়ছে... বালুর ওপর কাঁকড়া আর ধারালো প্রবালের মাঝে সাবধানে পথ খুঁজছে রাজন।',
+    storyBeatEmotion: 'normal',
     completeLineBn: 'যাক, ঢেউয়ের বিপদ থেকে তো বাঁচা গেল! এবার একটু খাবারের ব্যবস্থা করতে হবে।',
     completeEmotion: 'normal',
     platforms: [
@@ -481,9 +485,13 @@ export const LEVELS: LevelConfig[] = [
     biome: 'grove',
     worldWidth: 2650,
     startX: 100,
-    checkpointX: 1320,
+    checkpointX: 1250,
+    storyIntroBn: 'সৈকত পেরিয়ে রাজন ঢুকে পড়ল ঘন নারকেল বাগানে। ক্ষুধা মেটাতে আর সংযোগ ফিরিয়ে আনতে এখন উঁচু জায়গায় উঠতে হবে।',
+    storyIntroEmotion: 'normal',
     introLineBn: 'পেটের ভেতর তো মিউজিক শুরু হয়ে গেছে! গাছে আর মাটিতে ডাব আছে, খুঁজে নিতে হবে।',
     introEmotion: 'funny',
+    storyBeatBn: 'গাছের ছায়ায় লতা বেয়ে উপরে উঠার পথ... উঁচু কোনো জায়গা থেকে হয়তো আবার রাসেল ভাইয়ের ফোন পাওয়া যাবে।',
+    storyBeatEmotion: 'suspense',
     completeLineBn: 'বেশ কিছু ডাব পাওয়া গেছে! কিন্তু এখন ভীষণ তৃষ্ণা পাচ্ছে।',
     completeEmotion: 'normal',
     platforms: [
@@ -568,9 +576,13 @@ export const LEVELS: LevelConfig[] = [
     biome: 'spring',
     worldWidth: 2700,
     startX: 100,
-    checkpointX: 1350,
+    checkpointX: 1280,
+    storyIntroBn: 'চারপাশে অথৈ নোনা সমুদ্র, তবু দ্বীপের ভেতরে কোথাও লুকিয়ে আছে মিষ্টি জলের ঝরনা।',
+    storyIntroEmotion: 'normal',
     introLineBn: 'গলা শুকিয়ে কাঠ হয়ে যাচ্ছে। কোথাও মিষ্টি জলের উৎস থাকতেই হবে।',
     introEmotion: 'normal',
+    storyBeatBn: 'তৃষ্ণায় বুক ফেটে যাচ্ছে, তবু থামলে চলবে না—নোনা জলের ফাঁদ পেরিয়ে ওপারেই মিষ্টি জলের খোঁজ।',
+    storyBeatEmotion: 'suspense',
     completeLineBn: 'আহা! ঠান্ডা মিষ্টি জল! শরীরে যেন নতুন প্রাণ ফিরে এল।',
     completeEmotion: 'surprise',
     platforms: [
@@ -615,9 +627,13 @@ export const LEVELS: LevelConfig[] = [
     biome: 'camp',
     worldWidth: 2750,
     startX: 100,
-    checkpointX: 1400,
+    checkpointX: 1320,
+    storyIntroBn: 'সন্ধ্যার ছায়া ঘন হয়ে আসছে দ্বীপে। রাত নামার আগেই পরিত্যক্ত ক্যাম্পে তৈরি করতে হবে নিরাপদ আশ্রয়।',
+    storyIntroEmotion: 'suspense',
     introLineBn: 'সন্ধ্যা নামার আগেই একটা শক্তপোক্ত আশ্রয় বানাতে হবে। না হলে মশার ডিনার হয়ে যাব!',
     introEmotion: 'funny',
+    storyBeatBn: 'শুকনো কাঠ আর নারকেল পাতা জোগাড় হলেই জ্বলে উঠবে রাতের আগুন—যা বন্য রাতের বিপদ থেকে বাঁচাবে।',
+    storyBeatEmotion: 'normal',
     completeLineBn: 'আশ্রয় তৈরি হয়ে গেছে! আগুন আর ছাউনি আজ রাতটা বাঁচাবে।',
     completeEmotion: 'normal',
     platforms: [
@@ -667,9 +683,13 @@ export const LEVELS: LevelConfig[] = [
     biome: 'jungle',
     worldWidth: 2850,
     startX: 100,
-    checkpointX: 1450,
+    checkpointX: 1380,
+    storyIntroBn: 'নতুন ভোরের আলোয় রাজন পা রাখল গভীর রহস্যময় জঙ্গলে। এখানেই কোথাও লুকানো আছে উদ্ধার সংকেতের ফ্লেয়ার।',
+    storyIntroEmotion: 'suspense',
     introLineBn: 'জঙ্গলটা কেমন যেন থমথমে... ভেতরে ঢুকে সিগন্যাল ফ্লেয়ার খুঁজতে হবে।',
     introEmotion: 'suspense',
+    storyBeatBn: 'লতাপাতায় ঢাকা অন্ধকার জঙ্গল, পায়ে পায়ে বিষাক্ত কাঁটা... কিন্তু সিগন্যাল ফ্লেয়ার না পেলে উদ্ধার অসম্ভব!',
+    storyBeatEmotion: 'fear',
     completeLineBn: 'ইয়েস! সিগন্যাল ফ্লেয়ার পেয়ে গেছি! এখন উপকূল পেরিয়ে উঁচু পাহাড়ে উঠতে হবে।',
     completeEmotion: 'surprise',
     platforms: [
@@ -717,9 +737,13 @@ export const LEVELS: LevelConfig[] = [
     biome: 'rocky',
     worldWidth: 2900,
     startX: 100,
-    checkpointX: 1500,
+    checkpointX: 1450,
+    storyIntroBn: 'জঙ্গল পেরিয়ে সামনে ছেঁড়া দ্বীপের ভয়ংকর পাথুরে উপকূল! প্রতিটি পাথরের নিচে গর্জাচ্ছে সমুদ্রের ঢেউ।',
+    storyIntroEmotion: 'fear',
     introLineBn: 'সামনে ভয়ংকর পাথুরে উপকূল। একটু এদিক-ওদিক হলেই প্রবালে পা কাটবে!',
     introEmotion: 'fear',
+    storyBeatBn: 'প্রবাল আর উত্তাল ঢেউ সাঁতরে পাহাড়ি চূড়ার কাছাকাছি পৌঁছেছে রাজন—ওখান থেকেই আকাশ দেখা যাবে পরিষ্কার।',
+    storyBeatEmotion: 'suspense',
     completeLineBn: 'কঠিন উপকূল পার হয়েছি! ওই দূরে উঁচু টিলায় সংকেত দেওয়ার জায়গা।',
     completeEmotion: 'normal',
     platforms: [
@@ -757,9 +781,13 @@ export const LEVELS: LevelConfig[] = [
     biome: 'night',
     worldWidth: 2650,
     startX: 100,
-    checkpointX: 1300,
+    checkpointX: 1220,
+    storyIntroBn: 'রাত নেমেছে সেন্ট মার্টিনের আকাশে। দূরের বাতিঘরের নিস্তব্ধতায় রাজনের সামনে জীবনের সবচেয়ে বড় পরীক্ষা—শেষ উদ্ধার সংকেত!',
+    storyIntroEmotion: 'suspense',
     introLineBn: 'রাত নেমেছে... চারদিকে কেমন অদ্ভুত নিস্তব্ধতা। দূরের বাতিঘর দেখা যাচ্ছে, এবার শেষ সংকেত পাঠাতে হবে!',
     introEmotion: 'suspense',
+    storyBeatBn: 'আকাশের দিকে তাকিয়ে আছে দ্বীপের নিস্তব্ধ রাত... আর মাত্র কয়েক কদম পরেই জ্বলে উঠবে মুক্তির আগুন!',
+    storyBeatEmotion: 'suspense',
     completeLineBn: 'আকাশে আলোর সংকেত ছুড়েছি! ওই তো, হেলিকপ্টারের শব্দ শোনা যাচ্ছে!',
     completeEmotion: 'surprise',
     platforms: [
@@ -799,12 +827,53 @@ export const LEVELS: LevelConfig[] = [
   },
 ];
 
+export const STORY_EVENT_LINES: Record<
+  'phoneNoSignal' | 'phoneConnecting1' | 'phoneConnecting2' | 'phoneDisconnected' | 'endingApproaching' | 'gameOver',
+  { speaker: 'narrator' | 'razon' | 'rasel'; emotion: VoiceEmotion; textBn: string }
+> = {
+  phoneNoSignal: {
+    speaker: 'razon',
+    emotion: 'fear',
+    textBn: 'ব্যাকপ্যাক থেকে স্যাটেলাইট ফোন বের করলাম... কিন্তু একদমই সিগন্যাল দেখাচ্ছে না!',
+  },
+  phoneConnecting1: {
+    speaker: 'narrator',
+    emotion: 'suspense',
+    textBn: 'ক্ষীণ একটি স্যাটেলাইট সিগন্যাল ধরা পড়েছে! রাসেল ভাইয়ের ফোনে কল ঢুকছে...',
+  },
+  phoneConnecting2: {
+    speaker: 'narrator',
+    emotion: 'surprise',
+    textBn: 'উঁচু জায়গায় সিগন্যাল ফিরে এসেছে! আবার সংযোগ হচ্ছে রাসেল ভাইয়ের সাথে।',
+  },
+  phoneDisconnected: {
+    speaker: 'narrator',
+    emotion: 'suspense',
+    textBn: 'সংযোগ বিচ্ছিন্ন হয়ে গেল! উঁচু কোনো স্থানে উঠে আবার রাসেল ভাইয়ের সাথে যোগাযোগ করতে হবে।',
+  },
+  endingApproaching: {
+    speaker: 'narrator',
+    emotion: 'surprise',
+    textBn: 'রাতের আকাশ চিরে এগিয়ে আসছে উদ্ধারকারী হেলিকপ্টার! রাজনের সংকেত কাজ করেছে!',
+  },
+  gameOver: {
+    speaker: 'narrator',
+    emotion: 'suspense',
+    textBn: 'ক্লান্তি আর বিপদের ভারে দুর্বল হয়ে পড়েছে রাজন... তবে দ্বীপের লড়াই এখনো শেষ হয়নি।',
+  },
+};
+
 export type ContextualCategory =
   | 'explore_day'
   | 'explore_mystery'
   | 'hunger_low'
   | 'thirst_low'
   | 'pickup_food'
+  | 'pickup_water'
+  | 'spring_drink'
+  | 'catch_coconut'
+  | 'consume_item'
+  | 'water_splash'
   | 'pickup_wood'
   | 'danger_hurt'
   | 'beacon_ready';
@@ -842,6 +911,11 @@ export const CONTEXTUAL_DIALOGUES: Record<ContextualCategory, ContextualDialogue
       emotion: 'suspense',
       textBn: 'দূরের গাছগুলো কেমন যেন নড়ছে... বাতাস নাকি দ্বীপে আর কেউ আছে?',
     },
+    {
+      id: 'ex_d6',
+      emotion: 'funny',
+      textBn: 'জুতার ভেতর এত বালু ঢুকেছে, মনে হচ্ছে পায়ের নিচে মিনি সাহারা মরুভূমি নিয়ে হাঁটছি!',
+    },
   ],
   explore_mystery: [
     {
@@ -868,6 +942,11 @@ export const CONTEXTUAL_DIALOGUES: Record<ContextualCategory, ContextualDialogue
       id: 'ex_m5',
       emotion: 'funny',
       textBn: 'রাতের অন্ধকারে জঙ্গল তো বেশ রোমান্টিক... যদি না পাশে কাঁটা আর কাঁকড়া থাকত!',
+    },
+    {
+      id: 'ex_m6',
+      emotion: 'suspense',
+      textBn: 'ঝিঁঝিঁ পোকার ডাক হঠাৎ থেমে গেল... সামনে নিশ্চয়ই কোনো বড় বাধা অপেক্ষা করছে!',
     },
   ],
   hunger_low: [
@@ -920,6 +999,71 @@ export const CONTEXTUAL_DIALOGUES: Record<ContextualCategory, ContextualDialogue
       emotion: 'normal',
       textBn: 'দারুণ হয়েছে, এটা খুব কাজে দেবে!',
     },
+    {
+      id: 'pk_f4',
+      emotion: 'funny',
+      textBn: 'গাছের ডাব এখন আমার কাছে ফাইভ-স্টার বুফে!',
+    },
+  ],
+  pickup_water: [
+    {
+      id: 'pk_wt1',
+      emotion: 'surprise',
+      textBn: 'বাহ! মিষ্টি পানির বোতল! দ্বীপে এটা তো সোনার চেয়েও দামি!',
+    },
+    {
+      id: 'pk_wt2',
+      emotion: 'normal',
+      textBn: 'যাক, গলা ভেজানোর মতো বিশুদ্ধ পানি পাওয়া গেল!',
+    },
+  ],
+  spring_drink: [
+    {
+      id: 'spr_1',
+      emotion: 'surprise',
+      textBn: 'ওহহো! পাহাড়ি ঝরনার ঠান্ডা মিষ্টি জল! প্রাণটা জুড়িয়ে গেল!',
+    },
+    {
+      id: 'spr_2',
+      emotion: 'funny',
+      textBn: 'সেন্ট মার্টিনের মিনারেল ওয়াটার ফ্রি ফ্রি! বোতল ভরে নিই ঝটপট!',
+    },
+  ],
+  catch_coconut: [
+    {
+      id: 'cat_1',
+      emotion: 'surprise',
+      textBn: 'ওরে ক্যাচ! মাথার ওপর পড়ার আগেই ধরে ফেললাম!',
+    },
+    {
+      id: 'cat_2',
+      emotion: 'funny',
+      textBn: 'জাতীয় দলে ফিল্ডিংয়ের ডাক পেলে অবাক হবো না—কী ক্যাচ ধরলাম রে!',
+    },
+  ],
+  consume_item: [
+    {
+      id: 'con_1',
+      emotion: 'normal',
+      textBn: 'আহা... একটু খেয়ে-দেয়ে শরীরে জোর ফিরে পেলাম!',
+    },
+    {
+      id: 'con_2',
+      emotion: 'funny',
+      textBn: 'হুম, খারাপ না! তবে এর সাথে একটু ঝালমুড়ি হলে আরও জমে যেত!',
+    },
+  ],
+  water_splash: [
+    {
+      id: 'wsp_1',
+      emotion: 'surprise',
+      textBn: 'আরেহ! পানিটা একদম নোনা আর বেশ গভীর! তাড়াতাড়ি সাঁতরে ওপারে যাই!',
+    },
+    {
+      id: 'wsp_2',
+      emotion: 'funny',
+      textBn: 'ফ্রি সুইমিং পুল পেয়ে গেছি, খালি নিচে প্রবাল থাকলেই বিপদ!',
+    },
   ],
   pickup_wood: [
     {
@@ -931,6 +1075,11 @@ export const CONTEXTUAL_DIALOGUES: Record<ContextualCategory, ContextualDialogue
       id: 'pk_w2',
       emotion: 'normal',
       textBn: 'ভালো শুকনো কাঠ, আগুন আর আশ্রয়ে দারুণ কাজ হবে।',
+    },
+    {
+      id: 'pk_w3',
+      emotion: 'funny',
+      textBn: 'একটা দুটো করে জোগাড় হচ্ছে... আজ রাতেই দ্বীপের সেরা ক্যাম্প বানাব!',
     },
   ],
   danger_hurt: [

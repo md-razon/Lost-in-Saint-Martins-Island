@@ -31,6 +31,7 @@ import {
   INTRO_SCENES,
   LEVELS,
   PhoneDialogueLine,
+  STORY_EVENT_LINES,
 } from './game/levels';
 import { CharacterPortraits, loadCharacterPortraits } from './game/portraits';
 import { renderEndingScene, renderGameWorld, renderIntroScene, renderPhoneCallScene } from './game/renderer';
@@ -270,9 +271,10 @@ export default function App() {
 
   const usedContextIdsRef = useRef<Set<string>>(new Set());
   const lastContextAtRef = useRef<number>(0);
-  const nextAmbientVoiceAtRef = useRef<number>(18);
+  const nextAmbientVoiceAtRef = useRef<number>(12);
   const hungerWarnedRef = useRef<boolean>(false);
   const thirstWarnedRef = useRef<boolean>(false);
+  const checkpointSpokenRef = useRef<boolean>(false);
 
   const speakBg = useCallback(
     (speaker: VoiceSpeaker, textBn: string, emotion: VoiceEmotion = 'normal') => {
@@ -409,10 +411,31 @@ export default function App() {
       setSaveData(saved);
 
       sound.startAmbient(lvl.biome === 'night' ? 'night' : 'ocean');
-      nextAmbientVoiceAtRef.current = g.time + 17 + Math.random() * 6;
+      nextAmbientVoiceAtRef.current = g.time + 11 + Math.random() * 4;
       hungerWarnedRef.current = false;
       thirstWarnedRef.current = false;
-      speakBg('razon', lvl.introLineBn, lvl.introEmotion ?? 'normal');
+      checkpointSpokenRef.current = false;
+      if (lvl.storyBeatBn) {
+        void voice.prefetch(lvl.storyBeatBn, 'narrator', lvl.storyBeatEmotion ?? 'suspense');
+      }
+      void voice.prefetch(lvl.completeLineBn, 'razon', lvl.completeEmotion ?? 'normal');
+
+      if (lvl.storyIntroBn) {
+        void voice.speakSequence([
+          {
+            text: lvl.storyIntroBn,
+            speaker: 'narrator',
+            options: { emotion: lvl.storyIntroEmotion ?? 'suspense' },
+          },
+          {
+            text: lvl.introLineBn,
+            speaker: 'razon',
+            options: { emotion: lvl.introEmotion ?? 'normal' },
+          },
+        ]);
+      } else {
+        speakBg('razon', lvl.introLineBn, lvl.introEmotion ?? 'normal');
+      }
       setScreen('PLAYING');
       syncHud();
     },
@@ -445,6 +468,20 @@ export default function App() {
       });
       sound.playPhoneVibrate();
       setScreen('PHONE_CALL');
+      if (initialPhase === 'no_signal') {
+        void voice.speak(STORY_EVENT_LINES.phoneNoSignal.textBn, STORY_EVENT_LINES.phoneNoSignal.speaker, {
+          emotion: STORY_EVENT_LINES.phoneNoSignal.emotion,
+        });
+        void voice.prefetch(
+          STORY_EVENT_LINES.phoneConnecting1.textBn,
+          STORY_EVENT_LINES.phoneConnecting1.speaker,
+          STORY_EVENT_LINES.phoneConnecting1.emotion
+        );
+      } else {
+        void voice.speak(STORY_EVENT_LINES.phoneConnecting2.textBn, STORY_EVENT_LINES.phoneConnecting2.speaker, {
+          emotion: STORY_EVENT_LINES.phoneConnecting2.emotion,
+        });
+      }
       const lines = callKind === 'call1' ? CALL_1_LINES : CALL_2_LINES;
       if (lines[0]) void voice.prefetch(lines[0].textBn, lines[0].speaker, lines[0].emotion);
       if (lines[1]) void voice.prefetch(lines[1].textBn, lines[1].speaker, lines[1].emotion);
@@ -568,8 +605,9 @@ export default function App() {
       life: 1.0,
       maxLife: 1.0,
     });
+    speakContextual('consume_item', 4.5);
     syncHud();
-  }, [screen, syncHud]);
+  }, [screen, speakContextual, syncHud]);
 
   const consumeWater = useCallback(() => {
     const g = gameRef.current;
@@ -587,8 +625,9 @@ export default function App() {
       life: 1.0,
       maxLife: 1.0,
     });
+    speakContextual('consume_item', 4.5);
     syncHud();
-  }, [screen, syncHud]);
+  }, [screen, speakContextual, syncHud]);
 
   // Keyboard bindings
   useEffect(() => {
@@ -701,7 +740,7 @@ export default function App() {
           spawnBurst(obj.x + 14, obj.y + 14, '#84cc16');
           addFloating(obj.x, obj.y - 10, '+১ ডাব', '#bef264');
           advanceMission('collect_coconut', 1);
-          if (Math.random() < 0.36) speakContextual('pickup_food', 14);
+          if (Math.random() < 0.85) speakContextual('pickup_food', 3.5);
           break;
         case 'water_bottle':
           obj.collected = true;
@@ -711,7 +750,7 @@ export default function App() {
           spawnBurst(obj.x + 12, obj.y + 16, '#38bdf8');
           addFloating(obj.x, obj.y - 10, '+১ পানি', '#7dd3fc');
           advanceMission('collect_water', 1);
-          if (Math.random() < 0.36) speakContextual('pickup_food', 14);
+          if (Math.random() < 0.85) speakContextual('pickup_water', 3.5);
           break;
         case 'fresh_spring':
           if (!obj.activated) {
@@ -722,6 +761,7 @@ export default function App() {
             sound.playSplash();
             spawnBurst(obj.x + 36, obj.y + 20, '#22d3ee', 16);
             addFloating(obj.x + 20, obj.y - 10, '+২ মিষ্টি জল', '#67e8f9');
+            speakContextual('spring_drink', 2);
             advanceMission('collect_water', 2);
           }
           break;
@@ -733,7 +773,7 @@ export default function App() {
           spawnBurst(obj.x + 18, obj.y + 10, '#d97706');
           addFloating(obj.x, obj.y - 10, '+১ কাঠ', '#fcd34d');
           advanceMission('collect_wood', 1);
-          if (Math.random() < 0.38) speakContextual('pickup_wood', 14);
+          if (Math.random() < 0.82) speakContextual('pickup_wood', 3.5);
           break;
         case 'frond':
           obj.collected = true;
@@ -743,7 +783,7 @@ export default function App() {
           spawnBurst(obj.x + 20, obj.y + 12, '#22c55e');
           addFloating(obj.x, obj.y - 10, '+১ পাতা', '#86efac');
           advanceMission('collect_frond', 1);
-          if (Math.random() < 0.32) speakContextual('pickup_wood', 14);
+          if (Math.random() < 0.78) speakContextual('pickup_wood', 3.5);
           break;
         case 'flare_crate':
           if (!obj.collected) {
@@ -762,7 +802,8 @@ export default function App() {
             obj.activated = true;
             sound.playPickup();
             spawnBurst(obj.x + 42, obj.y + 25, '#fbbf24', 16);
-            if (obj.subtitleBn) speakBg('razon', obj.subtitleBn, 'normal');
+            const willComplete = g.missions.every((m) => m.kind === 'reach' || m.current >= m.target);
+            if (obj.subtitleBn && !willComplete) speakBg('razon', obj.subtitleBn, 'normal');
             advanceMission('reach', 1);
           }
           break;
@@ -948,11 +989,16 @@ export default function App() {
                 pr.vibrateTick = 0;
                 sound.playPhoneVibrate();
               }
-              if (pr.phaseTime >= 2.2) {
+              if ((pr.phaseTime >= 2.2 && !voice.isSpeaking()) || pr.phaseTime >= 6.5) {
                 pr.phase = 'connecting';
                 pr.phaseTime = 0;
                 pr.postVoiceWait = 0;
                 sound.playSatelliteConnect();
+                void voice.speak(
+                  STORY_EVENT_LINES.phoneConnecting1.textBn,
+                  STORY_EVENT_LINES.phoneConnecting1.speaker,
+                  { emotion: STORY_EVENT_LINES.phoneConnecting1.emotion }
+                );
                 setPhoneCallUi({
                   callKind: pr.callKind,
                   phase: 'connecting',
@@ -963,7 +1009,7 @@ export default function App() {
               }
             } else if (pr.phase === 'connecting') {
               const connectDur = pr.callKind === 'call1' ? 1.5 : 1.1;
-              if (pr.phaseTime >= connectDur) {
+              if ((pr.phaseTime >= connectDur && !voice.isSpeaking()) || pr.phaseTime >= 6.5) {
                 pr.phase = 'talking';
                 pr.lineIdx = 0;
                 pr.phaseTime = 0;
@@ -1014,6 +1060,11 @@ export default function App() {
                   pr.phase = 'disconnected';
                   pr.phaseTime = 0;
                   sound.playCallDisconnect();
+                  void voice.speak(
+                    STORY_EVENT_LINES.phoneDisconnected.textBn,
+                    STORY_EVENT_LINES.phoneDisconnected.speaker,
+                    { emotion: STORY_EVENT_LINES.phoneDisconnected.emotion }
+                  );
                   setPhoneCallUi({
                     callKind: pr.callKind,
                     phase: 'disconnected',
@@ -1026,7 +1077,7 @@ export default function App() {
                 }
               }
             } else if (pr.phase === 'disconnected') {
-              if (pr.phaseTime >= 2.6) {
+              if ((pr.phaseTime >= 2.6 && !voice.isSpeaking()) || pr.phaseTime >= 8.5) {
                 finishPhoneCall();
               }
             }
@@ -1071,6 +1122,7 @@ export default function App() {
                 spawnBurst(fc.x + 14, fc.y + 14, '#84cc16', 12);
                 addFloating(fc.x, fc.y - 10, 'ধরেছি! +১ ডাব', '#bef264');
                 advanceMission('collect_coconut', 1);
+                speakContextual('catch_coconut', 2.5);
                 continue;
               }
               if (fc.y >= -26) {
@@ -1096,6 +1148,9 @@ export default function App() {
               sound.playSplash();
               spawnBurst(p.x, 0, '#7dd3fc', 8);
               p.jumpsRemaining = 2;
+              if (inWaterZone?.salty && Math.random() < 0.7) {
+                speakContextual('water_splash', 9);
+              }
             }
 
             // Climbable vine/ladder/rope check
@@ -1412,30 +1467,44 @@ export default function App() {
             const desiredCam = Math.max(0, Math.min(lvl.worldWidth - viewW, p.x - viewW * focusRatio));
             g.cameraX += (desiredCam - g.cameraX) * Math.min(1, dt * 8);
 
-            // Contextual non-repeating survival & exploration voice acting
+            // Contextual non-repeating survival, storytelling & exploration voice acting
             if (p.hunger > 55) hungerWarnedRef.current = false;
             if (p.thirst > 55) thirstWarnedRef.current = false;
             if (!g.levelCleared && p.health > 0) {
-              if (p.hunger < 32 && !hungerWarnedRef.current) {
+              if (
+                lvl.storyBeatBn &&
+                !checkpointSpokenRef.current &&
+                p.x >= lvl.checkpointX &&
+                !voice.isSpeaking()
+              ) {
+                checkpointSpokenRef.current = true;
+                nextAmbientVoiceAtRef.current = g.time + 12 + Math.random() * 4;
+                speakBg('narrator', lvl.storyBeatBn, lvl.storyBeatEmotion ?? 'suspense');
+              } else if (p.hunger < 32 && !hungerWarnedRef.current) {
                 hungerWarnedRef.current = true;
-                speakContextual('hunger_low', 12);
+                speakContextual('hunger_low', 10);
               } else if (p.thirst < 32 && !thirstWarnedRef.current) {
                 thirstWarnedRef.current = true;
-                speakContextual('thirst_low', 12);
+                speakContextual('thirst_low', 10);
               } else if (g.time >= nextAmbientVoiceAtRef.current) {
-                nextAmbientVoiceAtRef.current = g.time + 19 + Math.random() * 8;
+                nextAmbientVoiceAtRef.current = g.time + 10 + Math.random() * 5;
                 const category: ContextualCategory =
                   lvl.id === 7 && p.x > 1600
                     ? 'beacon_ready'
                     : lvl.biome === 'jungle' || lvl.biome === 'night' || lvl.biome === 'rocky'
                     ? 'explore_mystery'
                     : 'explore_day';
-                speakContextual(category, 16);
+                speakContextual(category, 8);
               }
             }
 
             if (p.health <= 0) {
               sound.playHurt();
+              speakBg(
+                STORY_EVENT_LINES.gameOver.speaker,
+                STORY_EVENT_LINES.gameOver.textBn,
+                STORY_EVENT_LINES.gameOver.emotion
+              );
               setScreen('GAME_OVER');
             }
 
@@ -1477,6 +1546,11 @@ export default function App() {
                   };
                   setEndingStage('approaching');
                   sound.startAmbient('ocean');
+                  void voice.speak(
+                    STORY_EVENT_LINES.endingApproaching.textBn,
+                    STORY_EVENT_LINES.endingApproaching.speaker,
+                    { emotion: STORY_EVENT_LINES.endingApproaching.emotion }
+                  );
                   void voice.prefetch(
                     'রাজন! অবশেষে তোমায় পেলাম ভাই! তাড়াতাড়ি হাত ধরো, হেলিকপ্টারে ওঠো!',
                     'rasel',
@@ -1548,7 +1622,7 @@ export default function App() {
 
             renderEndingScene(ctx, viewW, viewH, er.stage, er.stageTime, er.elapsed, er.totalTime);
 
-            if (er.stage === 'approaching' && er.stageTime >= 4.2) {
+            if (er.stage === 'approaching' && ((er.stageTime >= 4.2 && !voice.isSpeaking()) || er.stageTime >= 9.0)) {
               er.stage = 'dialogue';
               er.stageTime = 0;
               er.postVoiceWait = 0;
@@ -1601,7 +1675,7 @@ export default function App() {
 
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, [finishPhoneCall, loadLevel, screen, skipIntroToLevel1, speakBg, speakPhoneLine, startPhoneCall, syncHud]);
+  }, [finishPhoneCall, loadLevel, screen, skipIntroToLevel1, speakBg, speakContextual, speakPhoneLine, startPhoneCall, syncHud]);
 
   const currentIntroScene = INTRO_SCENES[introSceneIdx] || INTRO_SCENES[0];
   const activePhoneLines = phoneCallUi.callKind === 'call1' ? CALL_1_LINES : CALL_2_LINES;
@@ -1910,14 +1984,14 @@ export default function App() {
 
               <div className="bg-slate-900/85 border border-slate-800 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-100 leading-relaxed">
                 {phoneCallUi.phase === 'no_signal' &&
-                  'রাজন: ব্যাকপ্যাক থেকে স্যাটেলাইট ফোন বের করলাম... কিন্তু NO SIGNAL দেখাচ্ছে!'}
+                  `রাজন: ${STORY_EVENT_LINES.phoneNoSignal.textBn}`}
                 {phoneCallUi.phase === 'connecting' &&
                   (phoneCallUi.callKind === 'call1'
-                    ? 'ক্ষীণ স্যাটেলাইট সিগন্যাল পাওয়া গেছে! রাসেল ভাইকে কল ঢুকছে...'
-                    : 'উঁচু জায়গায় সিগন্যাল ফিরেছে! রাসেল ভাইয়ের সাথে আবার সংযোগ হচ্ছে...')}
+                    ? STORY_EVENT_LINES.phoneConnecting1.textBn
+                    : STORY_EVENT_LINES.phoneConnecting2.textBn)}
                 {phoneCallUi.phase === 'talking' && currentPhoneLine.textBn}
                 {phoneCallUi.phase === 'disconnected' &&
-                  'SATELLITE CONNECTION LOST · উঁচু কোনো স্থানে উঠে আবার রাসেল ভাইয়ের সাথে যোগাযোগ করো!'}
+                  `SATELLITE CONNECTION LOST · ${STORY_EVENT_LINES.phoneDisconnected.textBn}`}
               </div>
             </div>
           </div>

@@ -134,8 +134,12 @@ export interface LevelConfig {
   biome: BiomeType;
   worldWidth: number;
   startX: number;
+  storyIntroBn?: string;
+  storyIntroEmotion?: VoiceEmotion;
   introLineBn: string;
   introEmotion?: VoiceEmotion;
+  storyBeatBn?: string;
+  storyBeatEmotion?: VoiceEmotion;
   completeLineBn: string;
   completeEmotion?: VoiceEmotion;
   platforms: Platform[];

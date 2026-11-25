@@ -11,6 +11,7 @@ import {
   CONTEXTUAL_DIALOGUES,
   INTRO_SCENES,
   LEVELS,
+  STORY_EVENT_LINES,
 } from '../src/game/levels';
 import { VoiceEmotion } from '../src/game/types';
 
@@ -291,12 +292,28 @@ function collectSpecs(): VoiceSpec[] {
   });
 
   for (const lvl of LEVELS) {
+    if (lvl.storyIntroBn) {
+      specs.push({
+        id: `lvl${lvl.id}_story_intro`,
+        speaker: 'narrator',
+        emotion: lvl.storyIntroEmotion ?? 'suspense',
+        textBn: lvl.storyIntroBn,
+      });
+    }
     specs.push({
       id: `lvl${lvl.id}_intro`,
       speaker: 'razon',
       emotion: lvl.introEmotion ?? 'normal',
       textBn: lvl.introLineBn,
     });
+    if (lvl.storyBeatBn) {
+      specs.push({
+        id: `lvl${lvl.id}_story_beat`,
+        speaker: 'narrator',
+        emotion: lvl.storyBeatEmotion ?? 'suspense',
+        textBn: lvl.storyBeatBn,
+      });
+    }
     specs.push({
       id: `lvl${lvl.id}_complete`,
       speaker: 'razon',
@@ -313,6 +330,15 @@ function collectSpecs(): VoiceSpec[] {
         });
       }
     }
+  }
+
+  for (const [key, item] of Object.entries(STORY_EVENT_LINES)) {
+    specs.push({
+      id: `story_${key}`,
+      speaker: item.speaker,
+      emotion: item.emotion,
+      textBn: item.textBn,
+    });
   }
 
   specs.push(

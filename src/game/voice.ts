@@ -10,6 +10,12 @@ export interface SpeakOptions {
   interference?: boolean;
 }
 
+export interface QueuedVoiceItem {
+  text: string;
+  speaker: VoiceSpeaker;
+  options?: SpeakOptions;
+}
+
 class BanglaVoiceEngine {
   private urlCache = new Map<string, string>();
   private bufferCache = new Map<string, ArrayBuffer>();
@@ -17,6 +23,7 @@ class BanglaVoiceEngine {
   private currentAudio: HTMLAudioElement | null = null;
   private currentBufferSource: AudioBufferSourceNode | null = null;
   private interferenceTimer: ReturnType<typeof setInterval> | null = null;
+  private pendingQueue: QueuedVoiceItem[] = [];
   private playSeq = 0;
   private busy = false;
   private safetyTimer: ReturnType<typeof setTimeout> | null = null;
@@ -27,7 +34,7 @@ class BanglaVoiceEngine {
   }
 
   public isSpeaking(): boolean {
-    if (this.busy) return true;
+    if (this.busy || this.pendingQueue.length > 0) return true;
     if (this.currentAudio && !this.currentAudio.ended && !this.currentAudio.paused) {
       return true;
     }
@@ -53,6 +60,12 @@ class BanglaVoiceEngine {
     if (seq !== this.playSeq) return;
     this.busy = false;
     this.clearTimers();
+    if (this.pendingQueue.length > 0 && !sound.isMuted()) {
+      const next = this.pendingQueue.shift()!;
+      void this.playSingle(next.text, next.speaker, next.options);
+      return;
+    }
+    this.pendingQueue = [];
     sound.setDucking(false);
   }
 
@@ -95,7 +108,7 @@ class BanglaVoiceEngine {
     return promise;
   }
 
-  public stop() {
+  private stopCurrentOnly() {
     this.playSeq += 1;
     this.busy = false;
     this.clearTimers();
@@ -117,6 +130,11 @@ class BanglaVoiceEngine {
       }
       this.currentBufferSource = null;
     }
+  }
+
+  public stop() {
+    this.pendingQueue = [];
+    this.stopCurrentOnly();
     sound.setDucking(false);
   }
 
@@ -236,7 +254,7 @@ class BanglaVoiceEngine {
     }
   }
 
-  public async speak(
+  private async playSingle(
     text: string,
     speaker: VoiceSpeaker = 'narrator',
     options?: SpeakOptions
@@ -246,7 +264,7 @@ class BanglaVoiceEngine {
       return;
     }
     const emotion: VoiceEmotion = options?.emotion ?? 'normal';
-    this.stop();
+    this.stopCurrentOnly();
     const seq = this.playSeq;
     this.busy = true;
     this.clearTimers();
@@ -313,6 +331,29 @@ class BanglaVoiceEngine {
     if (seq === this.playSeq) {
       this.holdReadingTime(text, seq, options);
     }
+  }
+
+  public async speak(
+    text: string,
+    speaker: VoiceSpeaker = 'narrator',
+    options?: SpeakOptions
+  ): Promise<void> {
+    this.pendingQueue = [];
+    await this.playSingle(text, speaker, options);
+  }
+
+  public async speakSequence(items: QueuedVoiceItem[]): Promise<void> {
+    const valid = items.filter((item) => Boolean(item.text));
+    if (valid.length === 0 || sound.isMuted()) {
+      this.stop();
+      return;
+    }
+    const [first, ...rest] = valid;
+    this.pendingQueue = rest;
+    for (const item of rest) {
+      void this.prefetch(item.text, item.speaker, item.options?.emotion ?? 'normal');
+    }
+    await this.playSingle(first.text, first.speaker, first.options);
   }
 }
 
