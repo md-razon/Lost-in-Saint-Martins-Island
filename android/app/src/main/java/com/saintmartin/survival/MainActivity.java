@@ -8,8 +8,8 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (this.bridge != null && this.bridge.getWebView() != null) {
-            WebSettings settings = this.bridge.getWebView().getSettings();
+        if (getBridge() != null && getBridge().getWebView() != null) {
+            WebSettings settings = getBridge().getWebView().getSettings();
             settings.setMediaPlaybackRequiresUserGesture(false);
         }
     }

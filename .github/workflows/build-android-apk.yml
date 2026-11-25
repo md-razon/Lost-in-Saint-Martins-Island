@@ -24,9 +24,18 @@ jobs:
           distribution: temurin
           java-version: 21
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android SDK licenses & install API 36
+        run: |
+          yes | sdkmanager --licenses >/dev/null 2>&1 || true
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+
       - name: Install dependencies and build web bundle
         run: |
-          npm ci
+          npm ci || npm install
+          npm run lint
           npm run build
 
       - name: Sync Capacitor Android assets
@@ -35,15 +44,15 @@ jobs:
       - name: Build Debug APK
         working-directory: android
         run: |
-          if [ -n "$ANDROID_HOME" ] && [ -d "$ANDROID_HOME/cmdline-tools" ]; then
-            yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
-          fi
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Verify APK exists
+        run: ls -lh android/app/build/outputs/apk/debug/app-debug.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: Lost-in-Saint-Martin-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
-
+          if-no-files-found: error
