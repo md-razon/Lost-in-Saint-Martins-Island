@@ -29,8 +29,9 @@ jobs:
 
       - name: Accept Android SDK licenses & install API 36
         run: |
-          yes | sdkmanager --licenses >/dev/null 2>&1 || true
-          sdkmanager "platform-tools" "platforms;android-36"
+          SDKMANAGER="$(command -v sdkmanager || find "${ANDROID_HOME:-/usr/local/lib/android/sdk}/cmdline-tools" -name sdkmanager -type f | head -n 1)"
+          yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
+          "$SDKMANAGER" "platform-tools" "platforms;android-36"
 
       - name: Install dependencies and build web bundle
         run: |
