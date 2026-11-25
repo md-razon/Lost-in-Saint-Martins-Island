@@ -1,0 +1,6 @@
+{
+  "name": "LOST IN SAINT MARTIN",
+  "description": "A 2D side-scrolling survival adventure game set on Saint Martin Island in Bangla.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
