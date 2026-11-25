@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Lost in Saint Martin</string>
+    <string name="title_activity_main">Lost in Saint Martin</string>
+    <string name="package_name">com.saintmartin.survival</string>
+    <string name="custom_url_scheme">com.saintmartin.survival</string>
+</resources>
